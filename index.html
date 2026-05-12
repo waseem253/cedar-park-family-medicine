@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cedar Park Family Medicine | HIPAA-Aware AI Receptionist (Portfolio Demo)</title>
+  <meta name="description" content="Cedar Park Family Medicine — a portfolio demonstration of a HIPAA-aware AI voice receptionist for family medicine. Talk to Sage in your browser.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #2d5f4e;
+      --primary-dark: #1a3a2e;
+      --accent: #c4a875;
+      --bg: #faf8f3;
+      --text: #1a2024;
+      --muted: #5a6361;
+      --border: #e7e3d8;
+      --danger: #b04a3a;
+      --success: #2d7a5f;
+    }
+    body {
+      font-family: 'Inter', -apple-system, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+    .demo-banner {
+      background: #fff4d6; border-bottom: 1px solid #e7d9a8;
+      color: #6a5418; font-size: 13px; padding: 10px 0; text-align: center;
+    }
+    .demo-banner strong { color: #463812; }
+
+    header {
+      padding: 20px 0; border-bottom: 1px solid var(--border);
+      background: white; position: sticky; top: 0; z-index: 10;
+    }
+    header .container { display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-weight: 800; font-size: 20px; color: var(--primary-dark); }
+    .nav-cta {
+      background: var(--primary); color: white; padding: 10px 20px;
+      border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px;
+      border: none; cursor: pointer; font-family: inherit;
+    }
+    .nav-cta:hover { background: var(--primary-dark); }
+
+    .hero { padding: 80px 0 60px; text-align: center; }
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 60px); font-weight: 800;
+      letter-spacing: -0.02em; line-height: 1.05; max-width: 820px; margin: 0 auto 24px;
+    }
+    .hero p.sub {
+      font-size: 20px; color: var(--muted); max-width: 640px; margin: 0 auto 40px;
+    }
+
+    .talk-cta {
+      display: inline-flex; align-items: center; gap: 14px;
+      background: var(--primary); color: white;
+      padding: 22px 36px; border-radius: 12px;
+      font-size: 20px; font-weight: 700; font-family: inherit;
+      box-shadow: 0 8px 24px rgba(45, 95, 78, 0.25);
+      transition: transform .15s, box-shadow .15s, background .15s;
+      border: none; cursor: pointer;
+    }
+    .talk-cta:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(45, 95, 78, 0.35);
+    }
+    .talk-cta:disabled { opacity: 0.85; cursor: default; }
+    .talk-cta.in-call { background: var(--danger); box-shadow: 0 8px 24px rgba(176, 74, 58, 0.25); }
+    .talk-cta .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: white; opacity: 0;
+    }
+    .talk-cta.in-call .dot { opacity: 1; animation: pulse 1s infinite; }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.6; }
+    }
+
+    .talk-status {
+      margin-top: 18px; font-size: 14px; color: var(--muted); min-height: 22px;
+    }
+    .talk-status.error { color: var(--danger); }
+    .talk-status.live { color: var(--success); font-weight: 600; }
+
+    .why-no-phone {
+      max-width: 640px; margin: 24px auto 0; padding: 16px 20px;
+      background: white; border: 1px solid var(--border); border-radius: 10px;
+      font-size: 13px; color: var(--muted); text-align: left; line-height: 1.6;
+    }
+    .why-no-phone strong { color: var(--text); }
+
+    .how-it-works { padding: 80px 0; background: white; }
+    .section-title { text-align: center; font-size: 36px; font-weight: 800; margin-bottom: 12px; }
+    .section-subtitle { text-align: center; color: var(--muted); margin-bottom: 50px; }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; }
+    .step { text-align: center; padding: 24px; }
+    .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--primary); color: white; font-size: 24px; font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .step h3 { font-size: 18px; margin-bottom: 8px; }
+    .step p { color: var(--muted); }
+
+    .services { padding: 80px 0; }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .service-card {
+      background: white; border: 1px solid var(--border);
+      padding: 24px; border-radius: 12px;
+    }
+    .service-card h4 { font-size: 16px; margin-bottom: 6px; color: var(--primary-dark); }
+    .service-card p { font-size: 14px; color: var(--muted); }
+
+    .compliance { padding: 80px 0; background: white; }
+    .compliance-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 40px; }
+    .compliance-card {
+      padding: 28px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg);
+    }
+    .compliance-card h4 { font-size: 17px; margin-bottom: 10px; color: var(--primary-dark); }
+    .compliance-card p { font-size: 14px; color: var(--muted); margin-bottom: 12px; }
+    .compliance-card a { color: var(--primary); font-weight: 600; text-decoration: none; font-size: 14px; }
+    .compliance-card a:hover { text-decoration: underline; }
+
+    .demo { padding: 80px 0; }
+    .loom-wrap {
+      max-width: 800px; margin: 40px auto 0;
+      position: relative; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.12);
+    }
+    .loom-wrap iframe {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
+    }
+
+    .portfolio { padding: 60px 0; background: var(--primary-dark); color: white; text-align: center; }
+    .portfolio h2 { font-size: 28px; margin-bottom: 16px; }
+    .portfolio p { color: rgba(255,255,255,0.85); max-width: 680px; margin: 0 auto 24px; }
+    .portfolio a {
+      display: inline-block; background: var(--accent); color: var(--text);
+      padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600;
+    }
+    .portfolio a:hover { background: #b8995f; }
+
+    footer {
+      padding: 24px 0; text-align: center; font-size: 13px; color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-banner">
+    <div class="container">
+      <strong>Portfolio demo.</strong> Cedar Park Family Medicine is a fictional practice. Do not share real medical information with Sage — the demo stack is not BAA-covered.
+    </div>
+  </div>
+
+  <header>
+    <div class="container">
+      <div class="logo">🌿 Cedar Park Family Medicine</div>
+      <button class="nav-cta" onclick="document.getElementById('talk-cta').click()">Talk to Sage</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Family medicine with a receptionist who never puts you on hold.</h1>
+      <p class="sub">Sage, our AI receptionist, handles bookings, refill requests, and triage 24/7 — in your browser, no phone tag, no waiting room queue.</p>
+
+      <button id="talk-cta" class="talk-cta">
+        <span class="dot"></span>
+        <span class="label">🎙️ Talk to Sage</span>
+      </button>
+      <p id="talk-status" class="talk-status">Click the button to start. Sage will ask for your name and date of birth before booking — that's the HIPAA identity gate at work.</p>
+
+      <div class="why-no-phone">
+        <strong>Why no phone number?</strong> The Bright Smile Dental demo uses a Vapi-provisioned US phone number (routed through Twilio). For Cedar Park, every component that touches voice data is a HIPAA Business Associate Agreement decision — fewer components, fewer ways to get it wrong. Production deployment re-introduces a BAA-covered Twilio plan.
+      </div>
+    </div>
+  </section>
+
+  <section class="how-it-works">
+    <div class="container">
+      <h2 class="section-title">How a call flows</h2>
+      <p class="section-subtitle">From hello to confirmed appointment in about 75 seconds — identity verification included.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3>You start a call</h3>
+          <p>Click "Talk to Sage" — voice streams over WebRTC to a HIPAA-aware GPT-4.1 agent.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>Identity gate</h3>
+          <p>Sage asks for your name and date of birth before any tool call — required before confirming "patient" status.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>Booked or routed</h3>
+          <p>Appointments land in our calendar. Refill requests and triage route to the clinical team via the secure message queue.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services">
+    <div class="container">
+      <h2 class="section-title">What Sage handles</h2>
+      <p class="section-subtitle">Five flows, all enforced by the same identity-verification gate.</p>
+      <div class="services-grid">
+        <div class="service-card"><h4>New patient intake</h4><p>Demographics, insurance, chief complaint, new-patient visit scheduling.</p></div>
+        <div class="service-card"><h4>Existing patient booking</h4><p>Identity verification, then follow-up or annual scheduling.</p></div>
+        <div class="service-card"><h4>Insurance verification</h4><p>Plan capture and hand-off to the billing team for eligibility check.</p></div>
+        <div class="service-card"><h4>Refill requests</h4><p>Identity + medication + pharmacy, routed via the secure message queue.</p></div>
+        <div class="service-card"><h4>Urgent triage</h4><p>Same-day visit vs. dial-911 escalation — distinguished by a word-for-word script.</p></div>
+        <div class="service-card"><h4>Hours &amp; FAQ</h4><p>Location, hours, accepted insurance — no PHI required.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="compliance">
+    <div class="container">
+      <h2 class="section-title">The HIPAA work, not just the conversation</h2>
+      <p class="section-subtitle">Voice AI for regulated healthcare is 20% the agent, 80% the vendor and architecture decisions around it.</p>
+      <div class="compliance-grid">
+        <div class="compliance-card">
+          <h4>📋 BAA Vendor Matrix</h4>
+          <p>Every vendor in the stack mapped to whether they sign a Business Associate Agreement, the required plan tier, and recommended substitutions where the default doesn't qualify.</p>
+          <a href="https://github.com/waseem253/cedar-park-family-medicine/blob/main/BAA_VENDOR_MATRIX.md" target="_blank" rel="noopener">Read the matrix →</a>
+        </div>
+        <div class="compliance-card">
+          <h4>🔒 HIPAA Compliance Audit</h4>
+          <p>Design audit covering PHI inventory, encryption at rest and in transit, access controls, audit logging, retention, patient rights, and breach protocol.</p>
+          <a href="https://github.com/waseem253/cedar-park-family-medicine/blob/main/HIPAA_COMPLIANCE_AUDIT.md" target="_blank" rel="noopener">Read the audit →</a>
+        </div>
+        <div class="compliance-card">
+          <h4>🏗️ Architecture</h4>
+          <p>Sequence diagrams for booking and refill flows, PHI flow map across demo vs. production stacks, and a full production-readiness checklist.</p>
+          <a href="https://github.com/waseem253/cedar-park-family-medicine/blob/main/ARCHITECTURE.md" target="_blank" rel="noopener">Read the architecture →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo">
+    <div class="container">
+      <h2 class="section-title">Watch Sage take a real booking</h2>
+      <p class="section-subtitle">End-to-end walkthrough including identity verification and a refill request.</p>
+      <div class="loom-wrap">
+        <iframe src="https://www.loom.com/embed/123b6387572949bc99a171db7619a1e2" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <section class="portfolio">
+    <div class="container">
+      <h2>About this demo</h2>
+      <p>Cedar Park Family Medicine is a portfolio build by <strong>Waseem Iftikhar</strong> — a voice AI engineer with 7 years of production Python and prior work on a HIPAA-compliant US healthcare practice-management system. I build production-grade AI receptionists, lead-qualification agents, and HIPAA-aware medical voice AI for clinics, agencies, and SaaS companies.</p>
+      <a href="https://www.upwork.com/freelancers/~0166938f759e168a91" target="_blank" rel="noopener">Hire me to build one for your practice →</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">© 2026 Cedar Park Family Medicine (portfolio demo) · Nashville, Tennessee · Built by Waseem Iftikhar</div>
+  </footer>
+
+  <script type="module">
+    import Vapi from "https://cdn.jsdelivr.net/npm/@vapi-ai/web@2.3.8/dist/index.mjs";
+
+    const VAPI_PUBLIC_KEY = "REPLACE_WITH_VAPI_PUBLIC_KEY";
+    const SAGE_ASSISTANT_ID = "REPLACE_WITH_SAGE_ASSISTANT_ID";
+
+    const btn = document.getElementById("talk-cta");
+    const label = btn.querySelector(".label");
+    const statusEl = document.getElementById("talk-status");
+
+    const idle = "Click the button to start. Sage will ask for your name and date of birth before booking — that's the HIPAA identity gate at work.";
+    const connecting = "Connecting to Sage…";
+    const live = "🟢 Live — Sage is listening.";
+    const ended = "Call ended. Click to start a new one.";
+
+    let vapi = null;
+    let inCall = false;
+
+    function setIdle() {
+      btn.classList.remove("in-call");
+      btn.disabled = false;
+      label.textContent = "🎙️ Talk to Sage";
+      statusEl.className = "talk-status";
+      statusEl.textContent = idle;
+      inCall = false;
+    }
+    function setConnecting() {
+      btn.disabled = true;
+      label.textContent = "Connecting…";
+      statusEl.className = "talk-status";
+      statusEl.textContent = connecting;
+    }
+    function setLive() {
+      btn.disabled = false;
+      btn.classList.add("in-call");
+      label.textContent = "■ End call";
+      statusEl.className = "talk-status live";
+      statusEl.textContent = live;
+      inCall = true;
+    }
+    function setError(msg) {
+      btn.classList.remove("in-call");
+      btn.disabled = false;
+      label.textContent = "🎙️ Try again";
+      statusEl.className = "talk-status error";
+      statusEl.textContent = msg;
+      inCall = false;
+    }
+    function setEnded() {
+      btn.classList.remove("in-call");
+      btn.disabled = false;
+      label.textContent = "🎙️ Talk to Sage";
+      statusEl.className = "talk-status";
+      statusEl.textContent = ended;
+      inCall = false;
+    }
+
+    function ensureConfigured() {
+      if (VAPI_PUBLIC_KEY.startsWith("REPLACE_") || SAGE_ASSISTANT_ID.startsWith("REPLACE_")) {
+        setError("Vapi web widget not configured yet. Update VAPI_PUBLIC_KEY and SAGE_ASSISTANT_ID in index.html.");
+        return false;
+      }
+      return true;
+    }
+
+    function ensureClient() {
+      if (vapi) return vapi;
+      vapi = new Vapi(VAPI_PUBLIC_KEY);
+      vapi.on("call-start", setLive);
+      vapi.on("call-end", setEnded);
+      vapi.on("error", (e) => {
+        console.error("Vapi error", e);
+        setError("Could not start the call. Check mic permission and try again.");
+      });
+      return vapi;
+    }
+
+    btn.addEventListener("click", async () => {
+      if (!ensureConfigured()) return;
+      const client = ensureClient();
+      if (inCall) {
+        client.stop();
+        return;
+      }
+      setConnecting();
+      try {
+        await client.start(SAGE_ASSISTANT_ID);
+      } catch (e) {
+        console.error(e);
+        setError("Could not start the call. Check mic permission and try again.");
+      }
+    });
+
+    setIdle();
+  </script>
+</body>
+</html>
